@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="file" id="file-input" accept=".ste" />
+<h4>Host: </h4><pre id="file-host"></pre>
+<h4>Username: </h4><pre id="file-username"></pre>
+<h4>Password: </h4><pre id="file-password"></pre>
+<script>
+
+    function decodePassword(input)
+    {
+        let output = "";
+
+        if(input.length === 0){return("");}
+
+        for(let i = 0; i < input.length / 2; i++){
+            let currentHex = parseInt(input.substr(i * 2, 2), 16);
+            if(currentHex <= 0xFFFF){
+                output += String.fromCharCode(currentHex - i);
+            }else if(currentHex <= 0x10FFFF){
+                currentHex -= 0x10000;
+                output += String.fromCharCode(0xD800 | (currentHex >> 10)) + String.fromCharCode(0xDC00 | (currentHex & 0x3FF) - i);
+            }else{
+                //Insert alert for below failure
+                return(false);
+            }
+        }
+
+        return(output);
+    }
+
+    function readSingleFile(e) {
+        var file = e.target.files[0];
+        if (!file) {
+            return;
+        }
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var contents = e.target.result;
+            displayContents(contents);
+        };
+        reader.readAsText(file);
+    }
+
+    function displayContents(contents) {
+        parser = new DOMParser();
+        xmlDoc = parser.parseFromString(contents,"text/xml");
+        if (contents.includes("remoteinfo")) {
+            document.getElementById('file-host').textContent = xmlDoc.getElementsByTagName("remoteinfo")[0].getAttribute("host");
+            document.getElementById('file-username').textContent = xmlDoc.getElementsByTagName("remoteinfo")[0].getAttribute("user");
+            document.getElementById('file-password').textContent = decodePassword(xmlDoc.getElementsByTagName("remoteinfo")[0].getAttribute("pw"));
+        }else{
+            document.getElementById('file-host').textContent = xmlDoc.getElementsByTagName("server")[0].getAttribute("host");
+            document.getElementById('file-username').textContent = xmlDoc.getElementsByTagName("server")[0].getAttribute("user");
+            document.getElementById('file-password').textContent = decodePassword(xmlDoc.getElementsByTagName("server")[0].getAttribute("pw"));
+        }
+    }
+
+    document.getElementById('file-input')
+        .addEventListener('change', readSingleFile, false);
+</script>
+</body>
+</html>
