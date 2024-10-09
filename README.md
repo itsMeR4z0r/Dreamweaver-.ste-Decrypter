@@ -1,4 +1,4 @@
-# [Dreamweaver .ste Decrypter](https://htmlpreview.github.io/?https://raw.githubusercontent.com/itsMeR4z0r/Dreamweaver-.ste-Decrypter/master/decriptydw.html)
+# [Dreamweaver .ste Decrypter](https://htmlpreview.github.io/?https://raw.githubusercontent.com/itsMeR4z0r/Dreamweaver-.ste-Decrypter/refs/heads/master/index.html)
 
 Dreamweaver .ste Decrypter é uma ferramenta baseada em HTML e JavaScript para descriptografar arquivos .ste utilizados pelo Adobe Dreamweaver. Esta aplicação permite que desenvolvedores e designers web recuperem rapidamente informações de configuração armazenadas nesses arquivos, facilitando a migração, backup e análise dos dados.
 
